@@ -1,0 +1,32 @@
+# @package _global_
+
+defaults:
+  - data: gaze_combined # choose datamodule with `test_dataloader()` for evaluation
+  - model: default
+  - trainer: gpu
+  - paths: default
+  - extras: default
+  - hydra: default
+  - logger: csv
+  - _self_
+
+data:
+  datasets_test:
+    - ${extras.gaze360}
+    - ${extras.gaze360video}
+    - ${extras.gfie}
+    - ${extras.gfievideo}
+    - ${extras.eyediap}
+    - ${extras.eyediapvideo}
+    - ${extras.mpiiface}
+  
+  batch_size: 120 # Needs to be divisible by the number of devices (e.g., if in a distributed setup)
+  num_workers: 10
+  data_to_cluster: False
+
+task_name: "eval"
+tags: ["dev"]
+
+
+# passing checkpoint path is necessary for evaluation
+ckpt_path: ???

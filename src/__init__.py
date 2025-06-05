@@ -1,0 +1,5 @@
+# SPDX-FileCopyrightText: 2025 Idiap Research Institute <contact@idiap.ch>
+#
+# SPDX-FileContributor: Pierre Vuillecard  <pierre.vuillecard@idiap.ch>
+#
+# SPDX-License-Identifier: CC-BY-NC-4.0

@@ -1,0 +1,71 @@
+# @package _global_
+
+# to execute this experiment run:
+# python train.py experiment=example
+
+defaults:
+  - override /data: gaze_combined
+  - override /callbacks: default
+  - override /trainer: gpu
+  - override /logger: wandb
+  - override /extras: default
+  - override /model: gat
+
+# all parameters below will be merged with parameters from default configurations set above
+# this allows you to overwrite only specified parameters
+seed: 12345
+
+trainer:
+  min_epochs: 20
+  max_epochs: 30
+  gradient_clip_val: 1
+  accumulate_grad_batches: 1
+  precision: 16 # speed up training by using 16-bit precision
+  # debug mode
+  # max_epochs: 3
+  # limit_train_batches: 0.01
+  # limit_val_batches: 0.01
+  # limit_test_batches: 0.01
+
+callbacks:
+  model_checkpoint:
+    monitor: "val/angular_gaze360video_gaze" 
+    mode: "min"
+
+  early_stopping:
+    monitor: "val/angular_gaze360video_gaze"
+    patience: 7
+    mode: "min"
+
+model:
+  solver:
+    lr: 0.0001
+    weight_decay: 0.001
+
+data:
+  datasets_train:
+    - ${extras.gaze360video}
+    - ${extras.gaze360}
+    - ${extras.gazefollow_pseudo_cvpr_baseline_360IV}
+  
+  datasets_test:
+    - ${extras.gaze360}
+    - ${extras.gaze360video}
+    - ${extras.gfie}
+    - ${extras.gfievideo}
+    - ${extras.mpiiface}
+    - ${extras.eyediap}
+    - ${extras.eyediapvideo}
+
+  batch_size: 120 # Needs to be divisible by the number of devices (e.g., if in a distributed setup)
+  num_workers: 10
+
+tags: [train_gf_gaze360IV,Swin3D,Gat,STWSGE]
+
+logger:
+  wandb:
+    tags: ${tags}
+    group: "CVPR25"
+    name: "Gat_STWSGE_G360I&V_GFbas"
+  aim:
+    experiment: "CVPR2025 Gat STWSGE G360I&V GF"

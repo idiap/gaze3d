@@ -1,0 +1,58 @@
+_target_: src.data.combined_datamodule.ConcatenateDataModule
+
+datasets_train:
+  - ${extras.gaze360}
+  - ${extras.gfie}
+  - ${extras.mpsgaze}
+
+datasets_test:
+  - ${extras.gaze360}
+  - ${extras.gfie}
+  - ${extras.mpsgaze}
+  - ${extras.eyediap}
+  - ${extras.gazefollow_pseudo}
+
+train_transform:
+  _target_: src.data.components.transforms.Compose
+  transforms:
+    - _target_: src.data.components.transforms.BboxReshape
+      square: True
+      ratio: ${extras.bbox_scale_ratio}
+    - _target_: src.data.components.transforms.ToImage
+    - _target_: src.data.components.transforms.Crop
+      output_size: ${extras.head_resolution}
+    - _target_: src.data.components.transforms.Concatenate
+    - _target_: src.data.components.transforms.HorizontalFlip
+    - _target_: src.data.components.transforms.ColorJitter
+      brightness: [0.5, 1.5]
+      contrast: [0.5, 1.5]
+      saturation: [0.2, 1.5]
+      hue: null
+      p: 0.5
+    - _target_: src.data.components.transforms.RandomGaussianBlur
+      radius: 5
+      p: 0.2
+    - _target_: src.data.components.transforms.ToTensor
+    - _target_: src.data.components.transforms.Normalize
+      mean: [0.485, 0.456, 0.406]
+      std: [0.229, 0.224, 0.225]
+
+test_transform:
+  _target_: src.data.components.transforms.Compose
+  transforms:
+    - _target_: src.data.components.transforms.BboxReshape
+      square: True
+      ratio: ${extras.bbox_scale_ratio}
+    - _target_: src.data.components.transforms.ToImage
+    - _target_: src.data.components.transforms.Crop
+      output_size: ${extras.head_resolution}
+    - _target_: src.data.components.transforms.Concatenate
+    - _target_: src.data.components.transforms.ToTensor
+    - _target_: src.data.components.transforms.Normalize
+      mean: [0.485, 0.456, 0.406]
+      std: [0.229, 0.224, 0.225]
+
+sampling_dataset: mean
+batch_size: 80 
+num_workers: 10
+data_to_cluster: False

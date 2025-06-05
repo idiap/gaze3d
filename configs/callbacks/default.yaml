@@ -1,0 +1,30 @@
+defaults:
+  - model_checkpoint
+  - model_checkpoint_last
+  - early_stopping
+  - model_summary
+  - lr_monitor
+  - rich_progress_bar
+  - _self_
+
+model_checkpoint:
+  dirpath: ${paths.output_dir}/checkpoints
+  filename: "best_epoch_{epoch:03d}"
+  monitor: "val/acc"
+  mode: "max"
+  auto_insert_metric_name: False
+
+
+model_checkpoint_last:
+  dirpath: ${paths.output_dir}/checkpoints
+  filename: "last"
+  save_last: True
+  every_n_epochs: 1
+  
+early_stopping:
+  monitor: "val/acc"
+  patience: 100
+  mode: "max"
+
+model_summary:
+  max_depth: -1

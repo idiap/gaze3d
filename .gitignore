@@ -1,0 +1,11 @@
+
+app.py
+/logs
+/output*
+*slurm*
+*.pyc
+/weights
+*.gradio
+/.reuse
+
+.pre-commit-config.yaml

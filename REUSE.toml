@@ -1,0 +1,9 @@
+version = 1
+SPDX-PackageName = "Prongen"
+SPDX-PackageSupplier = "<>"
+
+[[annotations]]
+path = [".gitignore", ".pre-commit-config.yaml", ".project-root","README.md", "THIRDPARTY", "setup.sh", "environment.yaml","data/**","checkpoints/**", "assets/**","configs/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Copyright 2023 Idiap Research Institute <contact@idiap.ch>"
+SPDX-License-Identifier = "CC-BY-NC-4.0"
